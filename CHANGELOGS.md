@@ -28,3 +28,8 @@
             - Added new directory 'Makefiles' for holding Makefile resources
                 + Added new test Makefile 'test.Makefile'
 
+#### 2256H
+- Updates
+    - Updated source file 'main.py' in 'src/bpm'
+        + Split function 'select_makefile' => 'set_makefile_name()' and 'set_makefile_path()' respectively
+

@@ -33,14 +33,22 @@ class BPM:
         # Return 
         return [targets, variables, comments]
 
-    def select_makefile(self, makefile_name="Makefile", makefile_path="."):
+    def set_makefile_name(self, makefile_name="Makefile"):
         """
-        Explicitly specify a new makefile to open
+        Explicitly specify the name of the new Makefile
         """
         # Initialize Variables
 
-        # Overwrite current file name and path
+        # Overwrite current file name
         self.makefile_parser.makefile_name = makefile_name
+
+    def set_makefile_path(self, makefile_path="."):
+        """
+        Explicitly specify the name of the new Makefile
+        """
+        # Initialize Variables
+
+        # Overwrite current file path
         self.makefile_parser.makefile_path = makefile_path
 
     def get_makefile_name(self):
