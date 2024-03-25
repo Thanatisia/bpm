@@ -1,0 +1,16 @@
+# Files/Folders to be ignored by git
+
+## Python Folders
+
+### Cache
+__pycache__/
+
+### Virtual Environments
+env/
+
+### Python Packaging (Setuptools)
+*.egg-info/
+dist/
+
+## Python Files
+

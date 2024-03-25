@@ -1,0 +1,5 @@
+# Python package dependencies
+
+pyright
+git+https://github.com/Thanatisia/makefile-parser-python
+
