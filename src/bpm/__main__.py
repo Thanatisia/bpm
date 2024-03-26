@@ -14,26 +14,35 @@ def display_help():
 ### Synopsis/Syntax
 - Default
     ```bash
-    bpm [makefile-path] [makefile-name]
+    bpm {options} <arguments> [actions]
     ```
 
 ### Parameters
 - Positionals
-    - makefile-path : Specify the path to the target Makefile you wish to manage
-        + Type: String
-        + Default: "."
-    - makefile-name : Specify the name of the target Makefile you wish to manage
-        + Type: String
-        + Default: "Makefile"
+    - actions : Specify the action you wish to take; You can stack multiple actions by appending them in chronological/iterative order
+        - Actions
+            + import : Import the Makefile contents into the system buffer/memory
+            + print : Print all imported Makefile contents; Note: You must use this after 'import' is provided
 
 - Optionals
     - With Arguments
+        - `-f | --file-name [makefile-name]`: Explicitly specify the name of the target Makefile
+            + Type: String
+            + Default: "Makefile"
+        - `-p | --file-path [makefile-path]`: Explicitly specify the path to the target Makefile
+            + Type: String
+            + Default: "."
     - Flags
 
 ### Usage
 - Import a target Makefile
     ```bash
-    bpm . Makefile
+    bpm -p . -f Makefile import
+    ```
+
+- Import and Print a target Makefile
+    ```bash
+    bpm -p . -f Makefile import print
     ```
     """
     print(help_msg)
@@ -47,36 +56,6 @@ def init(makefile_name="Makefile", makefile_path="."):
 
     # Initialize Classes
     bpm = BPM(makefile_name, makefile_path)
-
-def import_Makefile(makefile_name="Makefile", makefile_path="."):
-    """
-    Import Makefile into buffer
-    """
-    # Initialize Variables
-    targets:dict = {}
-    variables:dict = {}
-    comments:dict = {}
-    contents = {}
-
-    # Obtain default values
-    makefile_parser = bpm.makefile_parser
-
-    # Check if file exists
-    makefile_fullpath = os.path.join(makefile_path, makefile_name)
-
-    if os.path.isfile(makefile_fullpath):
-        # File exists
-        # Import Makefile
-        targets, variables, comments = bpm.import_makefile(makefile_name, makefile_path)
-
-        # Process Makefile contents
-        contents = makefile_parser.format_makefile_Contents(targets, variables)
-
-        # Output accordingly
-    else:
-        print("Makefile {} does not exist".format(makefile_fullpath))
-
-    return targets, variables, comments, contents
 
 def edit_Makefile(makefile_Contents):
     """
@@ -243,7 +222,7 @@ def main():
             start_package_management(makefile_name, makefile_path)
         elif curr_pos_arg == "import":
             # Import Makefile into system buffer
-            targets, variables, comments, contents = import_Makefile(makefile_name, makefile_path)
+            targets, variables, comments, contents = bpm.import_makefile(makefile_name, makefile_path)
             content_variables = contents["variables"]
             content_targets = contents["targets"]
         elif curr_pos_arg == "print":

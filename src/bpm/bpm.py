@@ -12,23 +12,40 @@ class BPM:
         """
         # Initialize Makefile Parser class
         self.makefile_parser = MakefileParser(makefile_name, makefile_path)
+        self.makefile_targets = {}   # Currently-imported Makefile targets
+        self.makefile_variables = {} # Currently-imported Makefile variables
+        self.makefile_comments = {}  # Currently-imported Makefile comments
 
     def import_makefile(self, makefile_name="Makefile", makefile_path="."):
         """
         Import Makefile into system buffer
         """
         # Initialize Variables
+        targets:dict = {}
+        variables:dict = {}
+        comments:dict = {}
+        contents = {}
 
-        # Import Makefile
-        targets, variables, comments = self.makefile_parser.parse_makefile(makefile_name, makefile_path)
+        # Check if file exists
+        makefile_fullpath = os.path.join(makefile_path, makefile_name)
+        if os.path.isfile(makefile_fullpath):
+            # File exists
+            # Import Makefile
+            targets, variables, comments = self.makefile_parser.parse_makefile(makefile_name, makefile_path)
 
-        # Set currently imported contents
-        self.makefile_targets = targets
-        self.makefile_variables = variables
-        self.makefile_comments = comments
+            # Set currently imported contents
+            self.makefile_targets = targets
+            self.makefile_variables = variables
+            self.makefile_comments = comments
 
-        # Return 
-        return [targets, variables, comments]
+            # Process Makefile contents
+            contents = self.makefile_parser.format_makefile_Contents(targets, variables)
+
+            # Output accordingly
+        else:
+            print("Makefile {} does not exist".format(makefile_fullpath))
+
+        return [targets, variables, comments, contents]
 
     def set_makefile_name(self, makefile_name="Makefile"):
         """

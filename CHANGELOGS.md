@@ -49,7 +49,6 @@
     + Renamed 'main.py' in 'src/bpm' => '__main__.py'
 
 #### 1000H
-+ Initial Commit
 + Version: v0.2.0
 
 - Version Changes
@@ -83,4 +82,26 @@
         + Added new functions 'obtain_arguments()' meant for obtaining CLI arguments and returning
         + Updated the CLI argument parser
         + Added Positional argument parsing support
+
+#### 1327H
++ Version: v0.3.0
+
+- Version Changes
+    + Updated the CLI argument parser
+    + Added Positional argument parsing support
+    + Fixed python packaging 'setup.py' to install to be usable as both modules and executables
+    + Added entry_points to install the main() module as an executable
+
+- TODO
+
+- Updates
+    - Updated document 'README.md'
+        + Updated CLI utility documentations
+        + Added Usages
+    - Updated source file '__main__.py' in 'src/bpm'
+        + Updated display_help() documentations
+        + Moved function 'import_Makefile()' => class BPM of 'bpm.py' in 'src/bpm'
+        + Added reference to class variable 'bpm'
+    - Updated source file 'bpm.py' in 'src/bpm'
+        + Moved function 'import_Makefile()' from '__main__.py' in 'src/bpm'
 
