@@ -105,3 +105,18 @@
     - Updated source file 'bpm.py' in 'src/bpm'
         + Moved function 'import_Makefile()' from '__main__.py' in 'src/bpm'
 
+#### 1348H
++ Version: v0.3.1
+
+- Version Changes
+    + Added new option '-v | --version' to display system version
+
+- Updates
+    - Updated document 'README.md'
+        + Updated package version to '0.3.1'
+    - Updated source file '__main__.py' in 'src/bpm'
+        + Added dependency 'pkg_resources' to manage python packages
+        + Added new option '-v | --version' to display system version
+    - Updated python packaging script 'setup.py'
+        + Updated package version to '0.3.1'
+
