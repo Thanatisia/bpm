@@ -3,6 +3,7 @@ BPM - Build (from Source) Package Manager: Package manager designed to use Makef
 """
 import os
 import sys
+import pkg_resources
 from .bpm import BPM
 
 def display_help():
@@ -47,6 +48,15 @@ def display_help():
     """
     print(help_msg)
 
+def display_version():
+    """
+    Display System Version
+    """
+    pkg_name = "bpm"
+    pkg_distribution = pkg_resources.get_distribution(pkg_name)
+    pkg_version = pkg_distribution.version
+    print("Package Name: {}\nPackage Distribution: {}\nPackage Version: {}".format(pkg_name, pkg_distribution, pkg_version))
+
 def init(makefile_name="Makefile", makefile_path="."):
     """
     Perform Pre-Initialization Setup
@@ -89,7 +99,7 @@ def obtain_arguments(err_msg=""):
     exec = sys.argv[0]
     argv = sys.argv[1:]
     argc = len(argv)
-    opts:dict = { "positionals" : [], "optionals" : {"with-arguments" : {"filename" : "Makefile", "filepath" : "."}, "flags" : {"help" : False}} }
+    opts:dict = { "positionals" : [], "optionals" : {"with-arguments" : {"filename" : "Makefile", "filepath" : "."}, "flags" : {"help" : False, "version" : False}} }
     makefile_path = "."
     makefile_name = "Makefile"
 
@@ -139,6 +149,9 @@ def obtain_arguments(err_msg=""):
                 case "-h" | "--help":
                     # Help Menu
                     opts["optionals"]["flags"]["help"] = True
+                case "-v" | "--version":
+                    # Help Menu
+                    opts["optionals"]["flags"]["version"] = True
                 ### Default ###
                 case _:
                     ## Append to Positionals
@@ -204,6 +217,9 @@ def main():
     # Print Help Message
     if opt_Flags["help"] == True:
         display_help()
+        exit(1)
+    elif opt_Flags["version"] == True:
+        display_version()
         exit(1)
 
     # Perform system initialization
