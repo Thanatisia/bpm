@@ -75,3 +75,12 @@
         + Added CLI argument parsing support
         + Added CLI optionals and flags
 
+#### 1159H
+- Updates
+    - Updated source file '__main__.py' in 'src/bpm'
+        + Formatted CLI argument 
+        + Added new functions 'import_Makefile()'
+        + Added new functions 'obtain_arguments()' meant for obtaining CLI arguments and returning
+        + Updated the CLI argument parser
+        + Added Positional argument parsing support
+
