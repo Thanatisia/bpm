@@ -23,6 +23,9 @@ Build (from Source) Package Manager for build-scripts, a package manager designe
 + python-pip
 + python-venv
 
+- Python packages
+    + mkparse @ https://github.com/Thanatisia/makefile-python-parser
+
 *Pre-Requisites*
 ----------------
 - Create Python Virtual Environments
@@ -65,7 +68,7 @@ Build (from Source) Package Manager for build-scripts, a package manager designe
 
 - Install Python package using GitHub repository via setuptools
     ```bash
-    pip install git+https://github.com/Thanatisia/makefile-parser-python
+    pip install git+https://github.com/Thanatisia/bpm
     ```
 
 ## Documentations

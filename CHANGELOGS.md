@@ -2,6 +2,7 @@
 
 ## Table of Contents
 + [2024-03-25](#2024-03-25)
++ [2024-03-26](#2024-03-26)
 
 ## Entry Logs
 ### 2024-03-25
@@ -32,4 +33,18 @@
 - Updates
     - Updated source file 'main.py' in 'src/bpm'
         + Split function 'select_makefile' => 'set_makefile_name()' and 'set_makefile_path()' respectively
+
+### 2024-03-26
+#### 0912H
+- New
+    + Added new source file '__init__.py' in 'src/bpm' to initialize the folder as a package/module
+    + Added new library 'bpm.py' in 'src/bpm' to hold all Build Package Manager contents
+    + Added python packaging script 'setup.py' for setuptools
+
+- Updates
+    - Updated document 'README.md'
+        + Added installation pre-requisites
+    - Updated source file 'main.py' in 'src/bpm'
+        + Moved class 'BPM' to 'bpm.py' in 'src/bpm'
+    + Renamed 'main.py' in 'src/bpm' => '__main__.py'
 
