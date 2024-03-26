@@ -69,3 +69,9 @@
     - Updated '__main__.py' in 'src/bpm'
         + Added data validation: Null value check
 
+#### 1027H
+- Updates
+    - Updated source file '__main__.py' in 'src/bpm'
+        + Added CLI argument parsing support
+        + Added CLI optionals and flags
+
