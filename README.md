@@ -23,6 +23,9 @@ Build (from Source) Package Manager for build-scripts, a package manager designe
 + python-pip
 + python-venv
 
+- Python packages
+    + mkparse @ https://github.com/Thanatisia/makefile-python-parser
+
 *Pre-Requisites*
 ----------------
 - Create Python Virtual Environments
@@ -53,31 +56,67 @@ Build (from Source) Package Manager for build-scripts, a package manager designe
 
 *Installing*
 ------------
-- Install locally in development mode
-    ```bash
-    pip install .
-    ```
+- Install as a module
+    - Install locally in development mode
+        ```bash
+        pip install .
+        ```
 
-- Install locally in editable development mode
-    ```bash
-    pip install -e .
-    ```
+    - Install locally in editable development mode
+        ```bash
+        pip install -e .
+        ```
 
-- Install Python package using GitHub repository via setuptools
-    ```bash
-    pip install git+https://github.com/Thanatisia/makefile-parser-python
-    ```
+    - Install Python package using GitHub repository via setuptools
+        ```bash
+        pip install git+https://github.com/Thanatisia/bpm
+        ```
+
+- Install Python package manually as an executable
+    - Install using setuptools
+        ```bash
+        python setup.py install
+        ```
+
+    - (Optional) Append your Virtual Environment's bin directory to system path
+        - Notes
+            + This is so that you can access the application/module from the system
+        ```bash
+        export PATH+=[virtual-environment-name]/bin:
+        ```
 
 ## Documentations
 ### Synopsis/Syntax
+- Default
+    ```bash
+    bpm [makefile-path] [makefile-name]
+    ```
+
 ### Parameters
+- Positionals
+    - makefile-path : Specify the path to the target Makefile you wish to manage
+        + Type: String
+        + Default: "."
+    - makefile-name : Specify the name of the target Makefile you wish to manage
+        + Type: String
+        + Default: "Makefile"
+
+- Optionals
+    - With Arguments
+    - Flags
+
 ### Usage
+- Import a target Makefile
+    ```bash
+    bpm . Makefile
+    ```
 
 ## Wiki
 
 ## Resources
 
 ## References
++ [StackOverflow - Questions - 4840182 - setup.py and adding file to /bin/](https://stackoverflow.com/questions/4840182/setup-py-and-adding-file-to-bin)
 
 ## Remarks
 
