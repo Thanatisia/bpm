@@ -15,6 +15,10 @@ Build (from Source) Package Manager for build-scripts, a package manager designe
             sudo make install
         - then the instructions are those
 
+### Project
++ Package Name: bpm
++ Current Version: v0.3.0
+
 ## Setup
 
 *Dependencies*
@@ -89,26 +93,35 @@ Build (from Source) Package Manager for build-scripts, a package manager designe
 ### Synopsis/Syntax
 - Default
     ```bash
-    bpm [makefile-path] [makefile-name]
+    bpm {options} <arguments> [actions]
     ```
 
 ### Parameters
 - Positionals
-    - makefile-path : Specify the path to the target Makefile you wish to manage
-        + Type: String
-        + Default: "."
-    - makefile-name : Specify the name of the target Makefile you wish to manage
-        + Type: String
-        + Default: "Makefile"
+    - actions : Specify the action you wish to take; You can stack multiple actions by appending them in chronological/iterative order
+        - Actions
+            + import : Import the Makefile contents into the system buffer/memory
+            + print : Print all imported Makefile contents; Note: You must use this after 'import' is provided
 
 - Optionals
     - With Arguments
+        - `-f | --file-name [makefile-name]`: Explicitly specify the name of the target Makefile
+            + Type: String
+            + Default: "Makefile"
+        - `-p | --file-path [makefile-path]`: Explicitly specify the path to the target Makefile
+            + Type: String
+            + Default: "."
     - Flags
 
 ### Usage
 - Import a target Makefile
     ```bash
-    bpm . Makefile
+    bpm -p . -f Makefile import
+    ```
+
+- Import and Print a target Makefile
+    ```bash
+    bpm -p . -f Makefile import print
     ```
 
 ## Wiki
