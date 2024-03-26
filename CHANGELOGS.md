@@ -48,3 +48,24 @@
         + Moved class 'BPM' to 'bpm.py' in 'src/bpm'
     + Renamed 'main.py' in 'src/bpm' => '__main__.py'
 
+#### 1000H
++ Initial Commit
++ Version: v0.2.0
+
+- Version Changes
+    + Fixed python packaging 'setup.py' to install to be usable as both modules and executables
+    + Added entry_points to install the main() module as an executable
+
+- TODO
+    + Add CLI argument options
+
+- Updates
+    - Updated document 'README.md'
+        + Added post-installation steps
+        + Added documentations for BPM
+    - Updated python packaging script 'setup.py'
+        + Fixed python packaging 'setup.py' to install to be usable as both modules and executables
+        + Added entry_points to install the main() module as an executable
+    - Updated '__main__.py' in 'src/bpm'
+        + Added data validation: Null value check
+

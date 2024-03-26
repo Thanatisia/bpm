@@ -7,6 +7,7 @@ setup(
     author='Thanatisia',
     author_email='55834101+Thanatisia@users.noreply.github.com',
     # packages=["mkparse"] ,# Default: find_packages()
+    packages=find_packages("src"),
     package_dir={"": "src"},
     install_requires=[
         # List your dependencies here
@@ -25,5 +26,11 @@ setup(
         'Programming Language :: Python :: 3.11',
         'Programming Language :: Python :: 3.12',
     ],
+    entry_points = {
+        # Program Entry Point(s) and scripts
+        'console_scripts' : [
+            'bpm = bpm.__main__:main',
+        ],
+    },
 )
 
