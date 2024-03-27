@@ -3,6 +3,7 @@
 ## Table of Contents
 + [2024-03-25](#2024-03-25)
 + [2024-03-26](#2024-03-26)
++ [2024-03-27](#2024-03-27)
 
 ## Entry Logs
 ### 2024-03-25
@@ -119,4 +120,36 @@
         + Added new option '-v | --version' to display system version
     - Updated python packaging script 'setup.py'
         + Updated package version to '0.3.1'
+
+### 2024-03-27
+#### 2215H
++ Version: v0.4.0
+
+- Version Changes
+    + Added new option '-t | --trim' to trim special characters like '\n' and '\t' from imported file contents
+    - Main CLI utility
+        + Added function 'print_formatted_contents(contents:dict)' abstraction for printing the formatted contents string dictionary to standard output
+    - bpm.bpm
+        + Added function 'remove_target_comments(self, targets:dict)' for removing comments from a 'target' lists
+
+- New
+    - Added new directory 'tests/' for holding all unit tests
+        + Added new unit test source 'unittest.py'
+    - Added new directory 'resources/' for holding test resource files
+        - Added new directory 'test-cases/' for holding test files during development
+            - Added new directory 'Makefiles' for holding Makefile resources
+                + Added new test Makefile 'test.Makefile'
+
+- Updates
+    - Updated document 'README.md'
+        + Updated package version to '0.4.0'
+        + Updated documentations and usages
+    - Updated python packaging script 'setup.py'
+        + Updated package version to '0.4.0'
+    - Updated source file '__main__.py' in 'src/bpm'
+        + Added new CLI argument option '-t|--trim' for trimming special characters like '\n' and '\t' from imported file contents
+        + Added function 'print_formatted_contents(contents:dict)' abstraction for printing the formatted contents string dictionary to standard output
+        + Updated documentations
+    - Updated source file 'bpm.py' in 'src/bpm'
+        + Added function 'remove_target_comments(self, targets:dict)' for removing comments from a 'target' lists
 

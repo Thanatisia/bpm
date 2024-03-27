@@ -37,15 +37,44 @@ class BPM:
             self.makefile_targets = targets
             self.makefile_variables = variables
             self.makefile_comments = comments
-
-            # Process Makefile contents
-            contents = self.makefile_parser.format_makefile_Contents(targets, variables)
-
-            # Output accordingly
         else:
             print("Makefile {} does not exist".format(makefile_fullpath))
 
-        return [targets, variables, comments, contents]
+        return [targets, variables, comments]
+
+    def remove_target_comments(self, targets:dict):
+        """
+        Remove comments from imported Makefile targets
+        """
+        # Loop through Makefile targets
+        for target_name, target_mappings in targets.items():
+            # Get target statements
+            curr_target_statements:list = target_mappings["statements"]
+
+            # Initialize Counter
+            i = 0;
+
+            # Loop through all statements using a while loop
+            while i <= len(curr_target_statements)-1:
+                # Get current statement
+                curr_statement = curr_target_statements[i]
+
+                # Check if '#' in current statement
+                if '#' in curr_statement:
+                    # Check if the current statements starts with the comment delimiter '#'
+                    ## Strip all special characters and Obtain first element
+                    first_character = curr_statement.strip()[0]
+                    if first_character == '#':
+                        ## Remove that line from the list
+                        curr_target_statements.pop(i)
+                        i+=1
+
+                # Increment counter by 1
+                i+=1
+
+            # Replace with new statements list
+            targets[target_name]["statements"] = curr_target_statements
+        return targets
 
     def set_makefile_name(self, makefile_name="Makefile"):
         """
@@ -94,4 +123,5 @@ class BPM:
         Getter method to receive the currently selected makefile's imported comments
         """
         return self.makefile_comments
+
 
