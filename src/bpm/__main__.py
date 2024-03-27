@@ -24,6 +24,7 @@ def display_help():
         - Actions
             + import : Import the Makefile contents into the system buffer/memory
             + print : Print all imported Makefile contents; Note: You must use this after 'import' is provided
+            + start : Start the Package Management main body (WIP; unused currently)
 
 - Optionals
     - With Arguments
@@ -34,6 +35,9 @@ def display_help():
             + Type: String
             + Default: "."
     - Flags
+        + `-h | --help` : Display help menu
+        + `-v | --version` : Show system version
+        + `-t | --trim` : Trim and remove all special characters ("\n", "\t" etc) from the imported file contents
 
 ### Usage
 - Import a target Makefile
@@ -62,10 +66,11 @@ def init(makefile_name="Makefile", makefile_path="."):
     Perform Pre-Initialization Setup
     """
     # Global Variables
-    global bpm
+    global bpm, makefile_parser
 
     # Initialize Classes
     bpm = BPM(makefile_name, makefile_path)
+    makefile_parser = bpm.makefile_parser
 
 def edit_Makefile(makefile_Contents):
     """
@@ -74,12 +79,64 @@ def edit_Makefile(makefile_Contents):
     # Initialize Variables
     line = ""
 
-def start_package_management(makefile_name="Makefile", makefile_path="."):
+def print_formatted_contents(contents:dict):
+    """
+    Print formatted content strings
+    """
+    # Output accordingly
+    content_variables = contents["variables"]
+    content_targets = contents["targets"]
+
+    # Check if variables and targets are imported
+    if len(content_variables) == 0 and len(content_targets) == 0:
+        print("Makefile is not imported, please specify 'import' before 'print'")
+        exit(1)
+
+    if len(content_variables) != 0:
+        # Print contents
+        print("=========")
+        print("Variables")
+        print("=========")
+        for i in range(len(content_variables)):
+            # Get current line
+            curr_line = content_variables[i]
+            # Print
+            print(curr_line)
+
+        print("")
+
+    if len(content_targets) != 0:
+        print("=======")
+        print("Targets")
+        print("=======")
+        for i in range(len(content_targets)):
+            # Get current line
+            curr_line = content_targets[i]
+            # Print
+            print(curr_line)
+
+def start_package_management(targets:dict, variables:dict, makefile_name="Makefile", makefile_path="."):
     """
     Main Package Manager Body
     """
     # Obtain default values
-    makefile_parser = bpm.makefile_parser
+
+    # Initialize Variables
+    target_dependencies:dict = {}
+    target_statements:dict = {}
+    target_variable_values:dict = {}
+
+    if len(targets) != 0:
+        print("Original Variables: {}".format(variables))
+        print("Original Targets: {}".format(targets))
+
+        # Trim and remove all special characters ("\n", "\t" etc)
+        targets, variables = makefile_parser.trim_contents(targets, variables)
+
+        print("Stripped Variables: {}".format(variables))
+        print("Stripped Targets: {}".format(targets))
+    else:
+        print("No targets imported")
 
 def obtain_arguments(err_msg=""):
     """
@@ -99,7 +156,7 @@ def obtain_arguments(err_msg=""):
     exec = sys.argv[0]
     argv = sys.argv[1:]
     argc = len(argv)
-    opts:dict = { "positionals" : [], "optionals" : {"with-arguments" : {"filename" : "Makefile", "filepath" : "."}, "flags" : {"help" : False, "version" : False}} }
+    opts:dict = { "positionals" : [], "optionals" : {"with-arguments" : {"filename" : "Makefile", "filepath" : "."}, "flags" : {"help" : False, "version" : False, "trim" : False}} }
     makefile_path = "."
     makefile_name = "Makefile"
 
@@ -152,6 +209,9 @@ def obtain_arguments(err_msg=""):
                 case "-v" | "--version":
                     # Help Menu
                     opts["optionals"]["flags"]["version"] = True
+                case "-t" | "--trim":
+                    # Trim the imported file contents during import
+                    opts["optionals"]["flags"]["trim"] = True
                 ### Default ###
                 case _:
                     ## Append to Positionals
@@ -198,6 +258,7 @@ def main():
     opt_Flags:dict = opt_opts["flags"]
     number_of_arg_opts:int = len(opt_with_Arguments)
     number_of_Flags:int = len(opt_Flags)
+    makefile_fullpath = os.path.join(makefile_path, makefile_name)
 
     """
     Process CLI arguments
@@ -235,40 +296,33 @@ def main():
         # Process current action
         if curr_pos_arg == "start":
             # Begin Package Manager
-            start_package_management(makefile_name, makefile_path)
+            print("Starting Package Manager {}...".format(makefile_fullpath))
+
+            start_package_management(targets, variables, makefile_name, makefile_path)
         elif curr_pos_arg == "import":
+            print("Importing Makefile {}...".format(makefile_fullpath))
+
             # Import Makefile into system buffer
-            targets, variables, comments, contents = bpm.import_makefile(makefile_name, makefile_path)
-            content_variables = contents["variables"]
-            content_targets = contents["targets"]
+            targets, variables, comments = bpm.import_makefile(makefile_name, makefile_path)
+
+            # Trim all special characters from left and right side ("\n", "\t" etc etc) if the '-t|--trim' flag is enabled
+            if opt_Flags["trim"] == True:
+                print("[O] Trimming Makefile and removing special characters from both ends...")
+                targets, variables = makefile_parser.trim_contents(targets, variables)
+
+            print("[+] Makefile {} imported.".format(makefile_fullpath))
+
+            # Print newline
+            print("")
         elif curr_pos_arg == "print":
-            # Check if variables and targets are imported
-            if len(content_variables) == 0 and len(content_targets) == 0:
-                print("Makefile is not imported, please specify 'import' before 'print'")
-                exit(1)
+            # Process Makefile contents
+            contents = makefile_parser.format_makefile_Contents(targets, variables)
 
-            if len(content_variables) != 0:
-                # Print contents
-                print("=========")
-                print("Variables")
-                print("=========")
-                for i in range(len(content_variables)):
-                    # Get current line
-                    curr_line = content_variables[i]
-                    # Print
-                    print(curr_line)
+            # Print formatted contents
+            print_formatted_contents(contents)
 
-                print("")
-
-            if len(content_targets) != 0:
-                print("=======")
-                print("Targets")
-                print("=======")
-                for i in range(len(content_targets)):
-                    # Get current line
-                    curr_line = content_targets[i]
-                    # Print
-                    print(curr_line)
+            # Print newline
+            print("")
 
 if __name__ == "__main__":
     main()

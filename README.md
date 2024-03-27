@@ -17,7 +17,7 @@ Build (from Source) Package Manager for build-scripts, a package manager designe
 
 ### Project
 + Package Name: bpm
-+ Current Version: v0.3.1
++ Current Version: v0.4.0
 
 ## Setup
 
@@ -102,6 +102,7 @@ Build (from Source) Package Manager for build-scripts, a package manager designe
         - Actions
             + import : Import the Makefile contents into the system buffer/memory
             + print : Print all imported Makefile contents; Note: You must use this after 'import' is provided
+            + start : Start the Package Management main body (WIP; unused currently)
 
 - Optionals
     - With Arguments
@@ -112,6 +113,9 @@ Build (from Source) Package Manager for build-scripts, a package manager designe
             + Type: String
             + Default: "."
     - Flags
+        + `-h | --help` : Display help menu
+        + `-v | --version` : Show system version
+        + `-t | --trim`: Trim and remove all special characters ("\n", "\t" etc) from the imported file contents
 
 ### Usage
 - Import a target Makefile
@@ -122,6 +126,11 @@ Build (from Source) Package Manager for build-scripts, a package manager designe
 - Import and Print a target Makefile
     ```bash
     bpm -p . -f Makefile import print
+    ```
+
+- Import and trim the imported Makefile contents
+    ```bash
+    bpm -t -p . -f Makefile import print
     ```
 
 ## Wiki
