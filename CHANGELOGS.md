@@ -163,4 +163,18 @@
         + Moved options in 'opts["optionals"]["list"]' => 'opts["optionals"]["list"]["makefiles"]'
         + Added CLI argument options '--list-all', '--list-targets', '--list-variables' to list the various information of the provided Makefile
 
+#### 1520H
++ Version: v0.4.1
+
+- Version Changes
+    + Added function 'format()' to streamline the formatting of targets and variables dictionary into standard output printable string lists and other formatting factors such as trimming
+    + Moved options in 'opts["optionals"]["list"]' => 'opts["optionals"]["list"]["makefiles"]'
+    + Added new CLI argument options '--list-all', '--list-targets', '--list-variables' to list the various information of the provided Makefile
+
+- Updates
+    - Updated document 'README.md'
+        + Updated package version to '0.4.1'
+        + Updated documentations and usages
+    - Updated python packaging script 'setup.py'
+        + Updated package version to '0.4.1'
 
