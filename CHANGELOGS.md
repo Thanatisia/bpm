@@ -4,6 +4,7 @@
 + [2024-03-25](#2024-03-25)
 + [2024-03-26](#2024-03-26)
 + [2024-03-27](#2024-03-27)
++ [2024-03-28](#2024-03-28)
 
 ## Entry Logs
 ### 2024-03-25
@@ -152,4 +153,14 @@
         + Updated documentations
     - Updated source file 'bpm.py' in 'src/bpm'
         + Added function 'remove_target_comments(self, targets:dict)' for removing comments from a 'target' lists
+
+### 2024-03-28
+#### 1513H
+- Updates
+    - Updated source file '__main__.py' in 'src/bpm'
+        + Moved header print into a dedicated function 'display_title()'
+        + Added function 'format()' to streamline the formatting of targets and variables dictionary into standard output printable string lists and other formatting factors such as trimming
+        + Moved options in 'opts["optionals"]["list"]' => 'opts["optionals"]["list"]["makefiles"]'
+        + Added CLI argument options '--list-all', '--list-targets', '--list-variables' to list the various information of the provided Makefile
+
 
