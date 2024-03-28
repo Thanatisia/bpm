@@ -6,6 +6,7 @@ import sys
 import pkg_resources
 from copy import deepcopy
 from bpm.bpm import BPM
+from bpm.network import Networking, GitHub
 
 def init(makefile_name="Makefile", makefile_path="."):
     global bpm, makefile_parser
@@ -112,6 +113,25 @@ def test_remove_comments(tmp_targets):
 
     # Output processed data
     return tmp_targets
+
+def test_get_request():
+    """
+    Test downloading files from raw.githubusercontent.com using HTTP GET request
+    """
+    # Initialize Variables
+    network = Networking()
+    gh = GitHub()
+    target_project_author = "git"
+    target_project_name = "git"
+    target_Makefile = "apt.Makefile"
+
+    # Set the current raw.githubusercontent.com URL to download from
+    gh.set_github_user_content_url("Thanatisia", "build-scripts", "packages/github/{}/{}/Makefiles/{}".format(target_project_author, target_project_name, target_Makefile))
+
+    # Perform a GET request and return
+    response = network.send_get_Request(gh.url)
+
+    print("Response: {}".format(response))
 
 def get_cli_arguments():
     """

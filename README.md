@@ -29,6 +29,7 @@ Build (from Source) Package Manager for build-scripts, a package manager designe
 
 - Python packages
     + mkparse @ https://github.com/Thanatisia/makefile-python-parser
+    + requests : To perform HTTP REST API requests
 
 *Pre-Requisites*
 ----------------

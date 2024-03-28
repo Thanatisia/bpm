@@ -178,3 +178,20 @@
     - Updated python packaging script 'setup.py'
         + Updated package version to '0.4.1'
 
+#### 1622H
+- New
+    + Added new source file 'network.py' in 'src/bpm': The Networking module of the Package Manager; performs the networking and web communication side of things
+
+- Updates
+    - Updated document 'README.md'
+        - Added new python package dependency 
+            + requests : For making HTTP API requests and responses
+    - Updated document 'requirements.txt'
+        - Added new python package dependency 
+            + requests : For making HTTP API requests and responses
+    - Updated python packaging script 'setup.py'
+        - Added new python package dependency 
+            + requests : For making HTTP API requests and responses
+    - Updated unit test source 'unittest.py' in 'tests/'
+        + Added new unit test for testing the GET HTTP request to download files from Github
+

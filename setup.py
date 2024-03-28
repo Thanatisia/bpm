@@ -12,6 +12,7 @@ setup(
     install_requires=[
         # List your dependencies here
         "pyright",
+        "requests",
         "mkparse @ git+https://github.com/Thanatisia/makefile-parser-python"
     ],
     url='https://github.com/Thanatisia/bpm',

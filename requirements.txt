@@ -1,5 +1,6 @@
 # Python package dependencies
 
 pyright
+requests
 git+https://github.com/Thanatisia/makefile-parser-python
 
