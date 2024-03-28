@@ -6,6 +6,12 @@ import sys
 import pkg_resources
 from .bpm import BPM
 
+def display_title():
+    """
+    Display bootup header title
+    """
+    print("BPM: Build Package Manager")
+
 def display_help():
     """
     Display Help Menu
@@ -79,6 +85,40 @@ def edit_Makefile(makefile_Contents):
     # Initialize Variables
     line = ""
 
+def format(targets=None, variables=None, trim=False):
+    """
+    Format Makefile target and/or variables dictionary and other actions like trimming
+
+    :: Params
+    - targets : Optional; The imported Makefile targets dictionary that you wish to format into a printable string you can display on standard output
+        + Type: Dictionary
+        + Default Value: None
+    - variables : Optional; The imported Makefile variables dictionary that you wish to format into a printable string you can display on standard output
+        + Type: Dictionary
+        + Default Value: None
+    - trim : Enable/Disable trimming of the formatted printable content strings
+        + Type: Boolean
+        + Default: False
+    """
+    # Initialize Variables
+
+    # Check if the 'trim' argument is True
+    if trim == True:
+         ## Trim all special characters from left and right side ("\n", "\t" etc etc) if the '-t|--trim' flag is enabled
+        print("[O] Trimming Makefile and removing special characters from both ends...")
+        # Check for Null-values
+        if (targets != None) and (variables != None):
+            targets, variables = makefile_parser.trim_contents(targets, variables)
+        elif (targets != None):
+            targets, variables = makefile_parser.trim_contents(targets=targets)
+        elif (variables != None):
+            variables = makefile_parser.trim_contents(variables=variables)
+
+    # Process Makefile contents
+    contents = makefile_parser.format_makefile_Contents(targets, variables)
+
+    return contents
+
 def print_formatted_contents(contents:dict):
     """
     Print formatted content strings
@@ -138,6 +178,19 @@ def start_package_management(targets:dict, variables:dict, makefile_name="Makefi
     else:
         print("No targets imported")
 
+def print_cli_arguments(opt_with_Arguments, opt_Flags):
+    print("With Arguments:")
+    for arg_name, arg_value in opt_with_Arguments.items():
+        print("{} = {}".format(arg_name, arg_value))
+
+    print("")
+
+    print("Optionals:")
+    for flag_name, flag_value in opt_Flags.items():
+        print("{} = {}".format(flag_name, flag_value))
+
+    print("")
+
 def obtain_arguments(err_msg=""):
     """
     Obtain CLI arguments and return
@@ -156,7 +209,7 @@ def obtain_arguments(err_msg=""):
     exec = sys.argv[0]
     argv = sys.argv[1:]
     argc = len(argv)
-    opts:dict = { "positionals" : [], "optionals" : {"with-arguments" : {"filename" : "Makefile", "filepath" : "."}, "flags" : {"help" : False, "version" : False, "trim" : False}} }
+    opts:dict = { "positionals" : [], "optionals" : {"with-arguments" : {"filename" : "Makefile", "filepath" : "."}, "flags" : {"help" : False, "list" : { "makefiles" : {"all" : False, "variables" : False, "targets" : False}, }, "version" : False, "trim" : False}} }
     makefile_path = "."
     makefile_name = "Makefile"
 
@@ -203,6 +256,15 @@ def obtain_arguments(err_msg=""):
                     # Shift 1 to the right to push out the next argument
                     i += 1
                 ### Flags ###
+                case "--list-all":
+                    # List all targets and variables
+                    opts["optionals"]["flags"]["list"]["makefiles"]["all"] = True
+                case "--list-targets":
+                    # List all targets
+                    opts["optionals"]["flags"]["list"]["makefiles"]["targets"] = True
+                case "--list-variables":
+                    # List all variables
+                    opts["optionals"]["flags"]["list"]["makefiles"]["variables"] = True
                 case "-h" | "--help":
                     # Help Menu
                     opts["optionals"]["flags"]["help"] = True
@@ -237,8 +299,6 @@ def obtain_arguments(err_msg=""):
     return [makefile_name, makefile_path, opts]
 
 def main():
-    print("BPM: Build Package Manager")
-    
     # Initialize Variables
     targets = {}
     variables = {}
@@ -260,31 +320,58 @@ def main():
     number_of_Flags:int = len(opt_Flags)
     makefile_fullpath = os.path.join(makefile_path, makefile_name)
 
+    # Perform system initialization
+    init(makefile_name, makefile_path)
+
     """
     Process CLI arguments
     """
-    print("With Arguments:")
-    for arg_name, arg_value in opt_with_Arguments.items():
-        print("{} = {}".format(arg_name, arg_value))
-
-    print("")
-
-    print("Optionals:")
-    for flag_name, flag_value in opt_Flags.items():
-        print("{} = {}".format(flag_name, flag_value))
-
-    print("")
+    # print_cli_arguments(opt_with_Arguments, opt_Flags)
 
     # Print Help Message
     if opt_Flags["help"] == True:
+        # Display Help Menu
         display_help()
         exit(1)
     elif opt_Flags["version"] == True:
+        # Display System Version
         display_version()
         exit(1)
+    elif True in list(opt_Flags["list"]["makefiles"].values()):
+        # If there are anything enabled in '--list-*'
+        makefile_flags_List = opt_Flags["list"]["makefiles"]
 
-    # Perform system initialization
-    init(makefile_name, makefile_path)
+        ## Check for '--list-*' flags
+        if makefile_flags_List["all"] == True:
+            # Import Makefile into system buffer
+            targets, variables, comments = bpm.import_makefile(makefile_name, makefile_path)
+
+            # Process Makefile contents
+            contents = format(targets, variables, opt_Flags["trim"])
+
+            # List all targets and variables
+            print_formatted_contents(contents)
+        elif makefile_flags_List["targets"] == True:
+            # Import Makefile into system buffer
+            targets, _, comments = bpm.import_makefile(makefile_name, makefile_path)
+
+            # Process Makefile contents
+            contents = format(targets, variables, opt_Flags["trim"])
+
+            # List all targets
+            print_formatted_contents(contents)
+        elif makefile_flags_List["variables"] == True:
+            # Import Makefile into system buffer
+            _, variables, comments = bpm.import_makefile(makefile_name, makefile_path)
+
+            # Process Makefile contents
+            contents = format(targets, variables, opt_Flags["trim"])
+
+            # List all variables
+            print_formatted_contents(contents)
+
+    # Start main application body
+    display_title()
 
     # Loop through all positionals
     for i in range(number_of_positionals):
