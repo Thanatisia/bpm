@@ -9,11 +9,13 @@ from bpm.bpm import BPM
 from bpm.network import Networking, GitHub
 
 def init(makefile_name="Makefile", makefile_path="."):
-    global bpm, makefile_parser
+    global bpm, makefile_parser, network, gh
 
     # Initialize Variables
     bpm = BPM(makefile_name, makefile_path)
     makefile_parser = bpm.makefile_parser  # Initialize Makefile Parser
+    network = Networking()
+    gh = GitHub()
 
 def print_makefile_contents(targets:dict, variables:dict):
     """
@@ -114,24 +116,25 @@ def test_remove_comments(tmp_targets):
     # Output processed data
     return tmp_targets
 
-def test_get_request():
+def test_get_request(target_project_author, target_project_name, target_Makefile):
     """
     Test downloading files from raw.githubusercontent.com using HTTP GET request
     """
     # Initialize Variables
-    network = Networking()
-    gh = GitHub()
-    target_project_author = "git"
-    target_project_name = "git"
-    target_Makefile = "apt.Makefile"
 
     # Set the current raw.githubusercontent.com URL to download from
     gh.set_github_user_content_url("Thanatisia", "build-scripts", "packages/github/{}/{}/Makefiles/{}".format(target_project_author, target_project_name, target_Makefile))
 
     # Perform a GET request and return
     response = network.send_get_Request(gh.url)
+    status_code = response.status_code
+    status_text = network.get_status_message(status_code)
+    response_text = response.text
 
-    print("Response: {}".format(response))
+    # Close connection after completion
+    response.close()
+
+    return [status_code, status_text, response_text]
 
 def get_cli_arguments():
     """
@@ -176,6 +179,38 @@ def main():
     print_makefile_contents(targets_comments_removed, variables)
 
     print("[+] Comments removed successfully")
+
+    print("")
+
+    # Test HTTP REST API GET request
+    ## Initialize Variables
+    target_project_author = "git"
+    target_project_name = "git"
+    target_Makefile = "apt.Makefile"
+
+    print("* Testing HTTP REST API GET request...")
+    try:
+        # Check if Makefile exists in current working directory
+        if not (os.path.isfile(target_Makefile)):
+            # Send a GET request to GitHub user content
+            status_code, status_text, response_text = test_get_request(target_project_author, target_project_name, target_Makefile)
+            print("Status [{} : {}]".format(status_code, status_text))
+
+            # File does not exist
+            ## Write Makefile content to file
+            network.save_downloaded_text(target_Makefile, response_text)
+            print("[+] File {} downloaded successfully.".format(target_Makefile))
+        else:
+            print("[-] File {} exists".format(target_Makefile))
+
+        # Import Makefile to dictionary
+        targets, variables, comments = makefile_parser.parse_makefile(target_Makefile)
+        print_makefile_contents(targets, variables)
+
+        # Export Makefile for comparison
+        makefile_parser.export_Makefile(targets, variables, "apt-2.Makefile")
+    except Exception as ex:
+        print("[-] Exception detected when performing test for GET request: {}".format(ex))
 
 if __name__ == "__main__":
     main()

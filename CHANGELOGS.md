@@ -5,6 +5,7 @@
 + [2024-03-26](#2024-03-26)
 + [2024-03-27](#2024-03-27)
 + [2024-03-28](#2024-03-28)
++ [2024-03-29](#2024-03-29)
 
 ## Entry Logs
 ### 2024-03-25
@@ -194,4 +195,24 @@
             + requests : For making HTTP API requests and responses
     - Updated unit test source 'unittest.py' in 'tests/'
         + Added new unit test for testing the GET HTTP request to download files from Github
+
+### 2024-03-29
+#### 1818H
+- New
+    + Added new source file 'files.py' in 'src/bpm': Contains Files-based Management and handling functions
+
+- Updates
+    - Updates '.gitignore'
+        + Added block files for Makefiles, build directories
+    - Updated source file 'network.py' in 'src/bpm'
+        + Added mappings for common HTTP status codes
+        + Added new function `get_status_message(self, status_code)`: Returns the status message string corresponding to the status code
+        + Added new function `save_downloaded_text(self, filename, response_text)`: Saves the response text string received from the GET request into the specified file
+    - Updated unit test source file 'unittest.py' in 'tests/'
+        - Added new unit test for
+            + Send a GET request to githubusercontent and return the response
+            + Import the response string from Makefile into Python and return the objects
+            + Format the Makefile dictionary contents into human-readable standard output string
+            + Print the formatted contents list
+            + Save the response string into a file and export it
 

@@ -16,6 +16,11 @@ class Networking():
         """
         self.url = ""
         self.newest_response = {} # Container to store the latest response
+        self.http_code = {
+            # status-code : message
+            200 : "OK",
+            404 : "Not Found"
+        }
 
     def set_url(self, url):
         """
@@ -28,6 +33,22 @@ class Networking():
         Get the URL
         """
         return self.url
+
+    def get_status_message(self, status_code):
+        """
+        Get the status message corresponding to the status code
+        """
+
+        """
+        status_text = self.http_code[status_code]
+        match status_code:
+            case 200:
+                # OK
+                status_text = "OK"
+            case _:
+                status_text = "Unknown"
+        """
+        return self.http_code[status_code]
 
     def send_get_Request(self, url):
         """
@@ -45,15 +66,32 @@ class Networking():
         # Obtain the Content Type
         response_content_Type = response_header["Content-Type"]
 
+        # Obtain the Status Code
+        response_status_Code = response.status_code
+
         # Store the latest responses
         self.newest_response = {
             "text" : response_text,
             "headers" : response_header,
-            "content-type" : response_content_Type
+            "content-type" : response_content_Type,
+            "status-code" : response_status_Code
         }
 
         # Return
         return response
+
+    def save_downloaded_text(self, filename, response_text):
+        """
+        Save the downloaded string obtained from the HTTP GET request
+        """
+        # File does not exist
+        ## Write Makefile content to file
+        with open(filename, "w") as download_file:
+            # Write GET request contents to file
+            download_file.write(response_text)
+
+            # Close file after usage
+            download_file.close()
 
 class GitHub(Networking):
     """
