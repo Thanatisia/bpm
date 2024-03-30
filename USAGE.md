@@ -59,7 +59,7 @@ Information regarding the various ways to use the Package Manager
                 + Default: "." (Current Working Directory)
 - network
     - `.Networking()` : The Package Manager Network Management and handler library (i.e. HTTP REST API etc etc)
-    - `.GitHub()` : Github-related git remote repository server Networking utilities
+    - `.GitHub()` : GitHub repository-related class, inheriting functions and attributes from class 'Networking'
 
 ### Functions
 - bpm.BPM
@@ -138,7 +138,52 @@ Information regarding the various ways to use the Package Manager
                 + Type: Dictionary
 
 - network.Networking
+    - `.set_url(url)`: Set the current URL
+        - Parameter/Argument Signatures
+            - url: Contains the currently set URL
+                + Type: String
+
+    - `.get_url():`: Getter method to obtain the currently set URL
+        - Return
+            - url: Contains the currently set URL
+                + Type: String
+
+    - `.get_status_message(status_code): Get the status message corresponding to the status code
+        - Return
+            - `status_message`: The message/string corresponding to the HTTP response status code
+                + Type: String
+
+    - `.send_get_Request(url)`: Send a GET request to the specified server/URL and return the response
+        - Parameter/Argument Signatures
+            - url: Contains the URL to the target server to send a GET request to
+                + Type: String
+        - Return
+            - `response`: The response object returned by the HTTP GET request
+                + Type: requests.response
+
+    - `.save_downloaded_text(filename, response_text)`: Save the downloaded string obtained from the HTTP GET request
+        - Parameter/Argument Signatures
+            - filename : Specify the name of the output file
+                + Type: String
+            - response_text : Specify the response text/string returned from the HTTP request sent (obtained from response.text)
+                + Type: String
+
 - network.GitHub
+    - `.set_github_user_content_url(repo_author, repo_name, filepath, branch="main")`: Set the current URL to the specified 'raw.githubusercontent.com' link of the repository
+        - Parameter/Argument Signatures
+            - repo_author: Specify the author of the repository
+                + Type: String
+            - repo_name: Specify the name of the repository
+                + Type: String
+            - filepath: Specify the path to the Makefile in the github repository
+                + Type: String
+            - branch: Specify the target branch to pull the Makefile build script from
+                + Type: String
+                + Default: main
+    - `.get_github_user_content_url()`: Getter method to obtain the currently set GitHub URL
+        - Return
+            - url: Contains the currently set GitHub user content URL
+                + Type: String
 
 ### Data Classes/Types
 
@@ -279,6 +324,25 @@ Information regarding the various ways to use the Package Manager
                 ## Enter the package repository
                 @cd ${PKG_NAME};
             ```
+
+- network.Networking
+    - `.url` : Contains the currently set URL
+        + Type: String
+    - `.newest_response` : Container to store the latest response
+        + Type: Dictionary
+    - `.http_code` : Dictionary (Key-Value) mapping the HTTP status codes to the relevant message
+        - Defaults
+            ```python
+            {
+                # status-code : message
+                200 : "OK",
+                404 : "Not Found"
+            }
+            ```
+
+- network.GitHub
+    - `.url` : Contains the currently set GitHub URL
+        + Type: String
 
 ## Usages
 

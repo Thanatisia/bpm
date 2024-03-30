@@ -246,3 +246,8 @@
     - Updated source file 'src/bpm/__main__.py'
         + Added new option '--generate-default-makefile' to generate a default Makefile template using a defined template string
 
+#### 1500H
+- Updates
+    - Updated document 'USAGE.md'
+        + Added documentation for module/library 'network.py' in 'src/bpm' containing the Networking and GitHub functionalities
+
