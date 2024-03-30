@@ -276,7 +276,6 @@ enter: clone
 
         # Check if both are not available (generate template)
         if (targets == None) and (variables == None):
-            print("Generate Template")
             # Check if file exists
             if not (os.path.isfile(makefile_fullpath)):
                 # Open file
@@ -299,7 +298,7 @@ enter: clone
 
             try:
                 # Export Makefile
-                self.makefile_parser.export_Makefile(targets, variables)
+                self.makefile_parser.export_Makefile(targets, variables, makefile_name, makefile_path)
             except Exception as ex:
                 error_msg = "Exception: {}".format(ex)
 

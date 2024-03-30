@@ -341,3 +341,14 @@
 #### 1546H
 - made changes
 
+#### 1738H
+- Updates
+    - Migrated '__main__.py' in 'src/bpm' to 'src/bpm/main.py'
+    - Updated 'setup.py'
+        + Replaced 'bpm = bpm.__main__:main' with 'bpm = bpm.main:main'
+    - Updated source file 'main.py' in 'src/bpm'
+        + Removed the auto exit in 'print_formatted_contents()'
+        + Added a simple menu while loop with a working menu system in 'start_package_management()'
+    - Updated source file 'bpm.py' in 'src/bpm'
+        + Added 'makefile_name' and 'makefile_path' to the 'export_makefile()' arguments
+

@@ -30,7 +30,7 @@ setup(
     entry_points = {
         # Program Entry Point(s) and scripts
         'console_scripts' : [
-            'bpm = bpm.__main__:main',
+            'bpm = bpm.main:main',
         ],
     },
 )

@@ -134,30 +134,29 @@ def print_formatted_contents(contents:dict):
     # Check if variables and targets are imported
     if len(content_variables) == 0 and len(content_targets) == 0:
         print("Makefile is not imported, please specify 'import' before 'print'")
-        exit(1)
+    else:
+        if len(content_variables) != 0:
+            # Print contents
+            print("=========")
+            print("Variables")
+            print("=========")
+            for i in range(len(content_variables)):
+                # Get current line
+                curr_line = content_variables[i]
+                # Print
+                print(curr_line)
 
-    if len(content_variables) != 0:
-        # Print contents
-        print("=========")
-        print("Variables")
-        print("=========")
-        for i in range(len(content_variables)):
-            # Get current line
-            curr_line = content_variables[i]
-            # Print
-            print(curr_line)
+            print("")
 
-        print("")
-
-    if len(content_targets) != 0:
-        print("=======")
-        print("Targets")
-        print("=======")
-        for i in range(len(content_targets)):
-            # Get current line
-            curr_line = content_targets[i]
-            # Print
-            print(curr_line)
+        if len(content_targets) != 0:
+            print("=======")
+            print("Targets")
+            print("=======")
+            for i in range(len(content_targets)):
+                # Get current line
+                curr_line = content_targets[i]
+                # Print
+                print(curr_line)
 
 def start_package_management(targets:dict, variables:dict, makefile_name="Makefile", makefile_path="."):
     """
@@ -169,18 +168,213 @@ def start_package_management(targets:dict, variables:dict, makefile_name="Makefi
     target_dependencies:dict = {}
     target_statements:dict = {}
     target_variable_values:dict = {}
+    line = ""
 
-    if len(targets) != 0:
-        print("Original Variables: {}".format(variables))
-        print("Original Targets: {}".format(targets))
+    # Loop until the input is quit
+    while True:
+        # Print output
+        print("""
+Choices:
+> dir : List all contents in the current directory
+> ls : Same as dir
+> get [name|path] : Get the currently-set file name/path
+> set {name=[name] path=[path]} : Set a new file name/path
+> in | import : Import a target Makefile file
+> p | print : Print all currently imported targets and variables
+> export {name=[new-filename] path=[new-filepath]} : Export the currently imported file contents to a new output Makefile
+> tr | trim: Trim contents
+> q | quit | exit : Exit program
+              """)
+        # Get user input
+        line = input("Your Input > ")
 
-        # Trim and remove all special characters ("\n", "\t" etc)
-        targets, variables = makefile_parser.trim_contents(targets, variables)
+        # Split the provided input into a list
+        input_list = line.split(" ")
 
-        print("Stripped Variables: {}".format(variables))
-        print("Stripped Targets: {}".format(targets))
-    else:
-        print("No targets imported")
+        # Check if list contains anything
+        if len(input_list) > 0:
+            # Input detected
+
+            # Get action
+            keyword = input_list[0]
+
+            # Try catch
+            try:
+                # Match, switch-case condition check
+                match keyword:
+                    case "dir" | "ls":
+                        """
+                        List all contents in the current directory
+                        """
+                        dir_contents = os.listdir(makefile_path)
+                        print("Directory Contents: {}".format(', '.join(dir_contents)))
+                    case "export":
+                        """
+                        Export the currently imported file contents to a new output Makefile
+
+                        Syntax: export {name=[new-filename] path=[new-filepath]}
+                        """
+                        # Initialize Variables
+                        output_filename = ""
+                        output_filepath = ""
+
+                        # Get Input Values
+                        input_values = input_list[1:]
+
+                        # Loop through the input values and split by '=' delimiter to get the targets and its value
+                        for i in range(len(input_values)):
+                            # Get current element
+                            curr_element = input_values[i]
+
+                            # Split current element by the '=' delimiter
+                            curr_element_spl = curr_element.split('=')
+
+                            # Obtain the LHS and RHS values
+                            curr_element_key = curr_element_spl[0]
+                            curr_element_value = curr_element_spl[1]
+
+                            # Check if target is file name or file path
+                            match curr_element_key:
+                                case "name":
+                                    # Set the output filename
+                                    output_filename = curr_element_value
+                                case "path":
+                                    # Set the output filename
+                                    output_filepath = curr_element_value
+                                case _:
+                                    # Default value
+                                    print("Invalid parameter: {}={}".format(curr_element_key, curr_element_value))
+
+                        # Check if output filename and file path are provided
+                        if (output_filename != "") and (output_filepath != ""):
+                            # Format output file paths
+                            output_fullpath = os.path.join(output_filepath, output_filename)
+
+                            # Validate targets and variables
+                            print("Targets: {}".format(targets))
+                            print("Variables: {}".format(variables))
+
+                            # File name and path are provided
+                            print("Writing contents to output file: [{}]...".format(output_fullpath))
+                            err = bpm.generate_Makefile(targets, variables, output_filename, output_filepath)
+
+                            # Print errors if any
+                            if err != "":
+                                print("Error Message: {}".format(err))
+                        else:
+                            if (output_filename == ""):
+                                print("File name is not provided")
+                            if (output_filepath == ""):
+                                print("File path is not provided")
+
+                    case "get":
+                        """
+                        Get the currently-set file name/path
+                        """
+                        # Get Target (file name/path)
+                        file_target = input_list[1]
+
+                        # Check if target is file name or file path
+                        match file_target:
+                            case "name":
+                                # Print the current file name
+                                print("Current File Name: {}".format(makefile_name))
+                            case "path":
+                                # Print the current file path
+                                print("Current File Path: {}".format(makefile_path))
+                            case _:
+                                # Default value
+                                print("Invalid target: {}".format(file_target))
+                    case "in" | "import":
+                        """
+                        Import a target Makefile file
+                        """
+                        # Import a specified file
+                        targets, variables, comments = bpm.import_makefile(makefile_name, makefile_path)
+                    case "p" | "print":
+                        """
+                        Print all currently imported targets and variables
+                        """
+                        # Process Makefile contents
+                        contents = format(targets, variables)
+
+                        # List all variables
+                        print_formatted_contents(contents)
+                    case "set":
+                        """
+                        Set a new file name/path
+
+                        Syntax: set {name=[name] path=[path]}
+                        """
+                        # Get Input Values
+                        input_values = input_list[1:]
+
+                        # Loop through the input values and split by '=' delimiter to get the targets and its value
+                        for i in range(len(input_values)):
+                            # Get current element
+                            curr_element = input_values[i]
+
+                            # Split current element by the '=' delimiter
+                            curr_element_spl = curr_element.split('=')
+
+                            # Obtain the LHS and RHS values
+                            curr_element_key = curr_element_spl[0]
+                            curr_element_value = curr_element_spl[1]
+
+                            # Check if target is file name or file path
+                            match curr_element_key:
+                                case "name":
+                                    # Set a new file name
+                                    makefile_name = curr_element_value
+                                case "path":
+                                    # Set a new file path
+                                    makefile_path = curr_element_value
+                                case _:
+                                    # Default value
+                                    print("Invalid parameter: {}={}".format(curr_element_key, curr_element_value))
+
+                        """
+                        # Get Target (file name/path)
+                        file_target = input_list[1]
+
+                        # Get Input Value
+                        input_value = input_list[2]
+
+                        # Check if target is file name or file path
+                        match file_target:
+                            case "name":
+                                # Set a new file name
+                                makefile_name = input_value
+                                print("New Makefile name [{}] has been set".format(input_value))
+                            case "path":
+                                # Set a new file path
+                                makefile_path = input_value
+                                print("New Makefile path [{}] has been set".format(input_value))
+                            case _:
+                                # Default value
+                                print("Invalid target: {}".format(file_target))
+                        """
+                    case "tr" | "trim":
+                        # Trim the provided targets and variables
+                        if len(targets) != 0:
+                            print("Original Variables: {}".format(variables))
+                            print("Original Targets: {}".format(targets))
+
+                            # Trim and remove all special characters ("\n", "\t" etc)
+                            targets, variables = makefile_parser.trim_contents(targets, variables)
+
+                            print("Stripped Variables: {}".format(variables))
+                            print("Stripped Targets: {}".format(targets))
+                        else:
+                            print("No targets imported")
+                    case "q" | "quit":
+                        break
+                    case _:
+                        print("Invalid option: {}".format(line))
+            except Exception as ex:
+                print("Exception detected: {}".format(ex))
+        else:
+            print("No input provided.")
 
 def print_cli_arguments(opt_with_Arguments, opt_Flags):
     print("With Arguments:")
