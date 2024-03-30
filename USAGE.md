@@ -45,6 +45,7 @@ Information regarding the various ways to use the Package Manager
 
 ### Modules
 - bpm : The main BPM - Build (from Source) Package Manager library
+- files : The Package Manager's File Management and handling library (i.e. file hashing, comparison etc)
 - network : The Package Manager's Network Management and server-related handler library (i.e. HTTP REST API etc etc)
 
 ### Classes
@@ -57,6 +58,8 @@ Information regarding the various ways to use the Package Manager
             - makefile_path : Specify the file path of the target Makefile
                 + Type: String
                 + Default: "." (Current Working Directory)
+- files
+    - `.Files()` : File Management class
 - network
     - `.Networking()` : The Package Manager Network Management and handler library (i.e. HTTP REST API etc etc)
     - `.GitHub()` : GitHub repository-related class, inheriting functions and attributes from class 'Networking'
@@ -136,6 +139,24 @@ Information regarding the various ways to use the Package Manager
         - Return
             - targets   : Makefile rules/targets + dependencies with the comments removed
                 + Type: Dictionary
+
+- files.Files
+    - `.hash_file(filename, hash_alg="sha256", BUF_SIZE=65536)`: Hash the specified file and return the hash digest
+        - Parameter/Argument Signatures
+            - filename: Specify the name of the target file to hash
+                + Type: String
+            - hash_alg: Specify the hashing algorithm to hash the file with
+                + Type: String
+                + Default: sha256
+                - Supported Algorithms
+                    + sha256 : SHA256
+            - BUF_SIZE: Buffer memory size; 65536 = 65536 bytes = 64 kilobytes
+                + Type: Integer
+                + Default: 65536
+
+        - Return
+            - hash_digest: The generated hash hexdigest
+                + Type: Hexadecimal Integer
 
 - network.Networking
     - `.set_url(url)`: Set the current URL

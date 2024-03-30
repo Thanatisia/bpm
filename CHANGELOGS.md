@@ -251,3 +251,13 @@
     - Updated document 'USAGE.md'
         + Added documentation for module/library 'network.py' in 'src/bpm' containing the Networking and GitHub functionalities
 
+#### 1516H
+- Updates
+    - Updated document 'USAGE.md'
+        + Added usage and documentation for 'Files()'
+    - Updated source file 'files.py' in 'src/bpm/'
+        + Implement hash function 'SHA256' to hash the specified file
+    - Updated unit test source file 'unittest.py' in 'tests/'
+        + Initialized class variables for 'Files()'
+        + Added a dedicated test function for testing the hashing of a specified file using SHA256
+

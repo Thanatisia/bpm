@@ -7,15 +7,17 @@ import pkg_resources
 from copy import deepcopy
 from bpm.bpm import BPM
 from bpm.network import Networking, GitHub
+from bpm.files import Files
 
 def init(makefile_name="Makefile", makefile_path="."):
-    global bpm, makefile_parser, network, gh
+    global bpm, makefile_parser, network, gh, files
 
     # Initialize Variables
     bpm = BPM(makefile_name, makefile_path)
     makefile_parser = bpm.makefile_parser  # Initialize Makefile Parser
     network = Networking()
     gh = GitHub()
+    files = Files()
 
 def print_makefile_contents(targets:dict, variables:dict):
     """
@@ -214,6 +216,16 @@ def test_template_Makefile(target_Makefile):
     # Export generated template Makefile
     makefile_parser.export_Makefile(targets, variables, "template.Makefile")
 
+def test_hash(filename="Makefile"):
+    """
+    Test the hash function and return the hash hex digest
+    """
+    # Hash the file
+    hash_hexdigest = files.hash_file(filename)
+
+    # Return
+    return hash_hexdigest
+
 def get_cli_arguments():
     """
     Obtain CLI arguments and options
@@ -269,6 +281,13 @@ def main():
     # Test the generation, printing of template Makefile files and strings
     target_Makefile = "test.Makefile"
     test_template_Makefile(target_Makefile)
+
+    print("")
+
+    # Test the file and return the hex digest
+    target_Makefile = "template.Makefile"
+    hexdigest = test_hash(target_Makefile)
+    print("Hex Digest: {}".format(hexdigest))
 
 if __name__ == "__main__":
     main()
