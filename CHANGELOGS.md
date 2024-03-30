@@ -338,3 +338,6 @@
     - Updated source file 'files.py' in 'src/bpm/'
         + Implement hash function 'SHA256' to hash the specified file
 
+#### 1546H
+- made changes
+
