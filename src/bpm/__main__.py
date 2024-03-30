@@ -41,6 +41,7 @@ def display_help():
             + Type: String
             + Default: "."
     - Flags
+        + `--generate-default-makefile` : Generate a default Makefile template file
         + `-h | --help` : Display help menu
         + `-v | --version` : Show system version
         + `-t | --trim` : Trim and remove all special characters ("\n", "\t" etc) from the imported file contents
@@ -55,6 +56,9 @@ def display_help():
     ```bash
     bpm -p . -f Makefile import print
     ```
+
+- Generate a template Makefile of the name 'Makefile'
+    bpm -p . --generate-default-makefile
     """
     print(help_msg)
 
@@ -209,7 +213,21 @@ def obtain_arguments(err_msg=""):
     exec = sys.argv[0]
     argv = sys.argv[1:]
     argc = len(argv)
-    opts:dict = { "positionals" : [], "optionals" : {"with-arguments" : {"filename" : "Makefile", "filepath" : "."}, "flags" : {"help" : False, "list" : { "makefiles" : {"all" : False, "variables" : False, "targets" : False}, }, "version" : False, "trim" : False}} }
+    opts:dict = { 
+        "positionals" : [], 
+        "optionals" : {
+            "with-arguments" : {"filename" : "Makefile", "filepath" : "."}, 
+            "flags" : {
+                "generate-default-template" : False,
+                "help" : False, 
+                "list" : { 
+                    "makefiles" : {"all" : False, "variables" : False, "targets" : False}, 
+                }, 
+                "version" : False, 
+                "trim" : False
+            }
+        } 
+    }
     makefile_path = "."
     makefile_name = "Makefile"
 
@@ -256,6 +274,9 @@ def obtain_arguments(err_msg=""):
                     # Shift 1 to the right to push out the next argument
                     i += 1
                 ### Flags ###
+                case "--generate-default-makefile":
+                    # Generate a default Makefile template
+                    opts["optionals"]["flags"]["generate-default-template"] = True
                 case "--list-all":
                     # List all targets and variables
                     opts["optionals"]["flags"]["list"]["makefiles"]["all"] = True
@@ -337,6 +358,13 @@ def main():
         # Display System Version
         display_version()
         exit(1)
+    elif opt_Flags["generate-default-template"] == True:
+        # Get specified path
+        makefile_path = opts["optionals"]["with-arguments"]["filepath"]
+        makefile_name = opts["optionals"]["with-arguments"]["filename"]
+
+        # Generate a default Makefile template
+        bpm.generate_Makefile(makefile_name=makefile_name, makefile_path=makefile_path)
     elif True in list(opt_Flags["list"]["makefiles"].values()):
         # If there are anything enabled in '--list-*'
         makefile_flags_List = opt_Flags["list"]["makefiles"]

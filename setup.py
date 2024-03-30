@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='bpm',
-    version='0.4.1',
+    version='0.5.0',
     description="Build (from Source) Package Manager for build-scripts, a package manager designed to use Makefiles as a primary method of management, building, installation and uninstallation",
     author='Thanatisia',
     author_email='55834101+Thanatisia@users.noreply.github.com',
@@ -12,6 +12,7 @@ setup(
     install_requires=[
         # List your dependencies here
         "pyright",
+        "requests",
         "mkparse @ git+https://github.com/Thanatisia/makefile-parser-python"
     ],
     url='https://github.com/Thanatisia/bpm',
