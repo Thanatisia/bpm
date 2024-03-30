@@ -235,3 +235,14 @@
         + Added a dedicated test function 'test_import_makefile_template_string()' for testing the importing of a Makefile string (specifically the default makefile template string) into the class targets and variables containers
         + Added a operational control flow test function 'test_template_Makefile(target_Makefile)' for testing the generation, printing of template Makefile files and strings (specifically the default makefile template string)
 
+#### 1438H
+- New
+    + Added new document 'USAGE.md' containing all usage methods as a library/package
+
+- Updates
+    - Updated document 'README.md'
+        + Added documentation for new option '--generate-default-makefile' to generate a default Makefile template using a defined template string
+        + Added usage for new option
+    - Updated source file 'src/bpm/__main__.py'
+        + Added new option '--generate-default-makefile' to generate a default Makefile template using a defined template string
+

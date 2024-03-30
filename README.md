@@ -114,6 +114,7 @@ Build (from Source) Package Manager for build-scripts, a package manager designe
             + Type: String
             + Default: "."
     - Flags
+        + `--generate-default-makefile` : Generate a template Makefile file using the defined makefile template string (Default Path = '.', Filename = 'Makefile)
         + `-h | --help` : Display help menu
         + `-v | --version` : Show system version
         + `-t | --trim`: Trim and remove all special characters ("\n", "\t" etc) from the imported file contents
@@ -132,6 +133,11 @@ Build (from Source) Package Manager for build-scripts, a package manager designe
 - Import and trim the imported Makefile contents
     ```bash
     bpm -t -p . -f Makefile import print
+    ```
+
+- Generate a template Makefile of the name 'Makefile'
+    ```bash
+    bpm -p [file-path] -f [filename] --generate-default-makefile
     ```
 
 ## Wiki
