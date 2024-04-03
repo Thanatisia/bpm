@@ -7,6 +7,7 @@
 + [2024-03-28](#2024-03-28)
 + [2024-03-29](#2024-03-29)
 + [2024-03-30](#2024-03-30)
++ [2024-04-03](#2024-04-03)
 
 ## Entry Logs
 ### 2024-03-25
@@ -340,4 +341,44 @@
 
 #### 1546H
 - made changes
+
+#### 1738H
+- Updates
+    - Migrated '__main__.py' in 'src/bpm' to 'src/bpm/main.py'
+    - Updated 'setup.py'
+        + Replaced 'bpm = bpm.__main__:main' with 'bpm = bpm.main:main'
+    - Updated source file 'main.py' in 'src/bpm'
+        + Removed the auto exit in 'print_formatted_contents()'
+        + Added a simple menu while loop with a working menu system in 'start_package_management()'
+    - Updated source file 'bpm.py' in 'src/bpm'
+        + Added 'makefile_name' and 'makefile_path' to the 'export_makefile()' arguments
+
+### 2024-04-03
+#### 2240H
++ Version: v0.6.0
+
+- Version Changes
+    - New Features
+        + Added a working menu system for the Build Package Manager
+    - TODO:
+        + Create a CLI interface and argument parser
+        + Create a working package manager
+    - Bug Fixes
+        + Fixed output issue where the Makefile is being downloaded to the current working directory instead
+    - Modifications and Changes
+        + Renamed '__main__.py' in 'src/bpm' to 'src/bpm/main.py'
+        + Added a simple menu while loop with a working menu system in 'start_package_management()' of main.py
+
+- Updates
+    - Updated document 'README.md'
+        + Updated package version to '0.6.0'
+    - Migrated '__main__.py' in 'src/bpm' to 'src/bpm/main.py'
+    - Updated 'setup.py'
+        + Replaced 'bpm = bpm.__main__:main' with 'bpm = bpm.main:main'
+        + Updated package version to '0.6.0'
+    - Updated source file 'main.py' in 'src/bpm'
+        + Removed the auto exit in 'print_formatted_contents()'
+        + Added a simple menu while loop with a working menu system in 'start_package_management()'
+    - Updated source file 'bpm.py' in 'src/bpm'
+        + Added 'makefile_name' and 'makefile_path' to the 'export_makefile()' arguments
 
