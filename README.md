@@ -17,7 +17,7 @@ Build (from Source) Package Manager for build-scripts, a package manager designe
 
 ### Project
 + Package Name: bpm
-+ Current Version: v0.6.0
++ Current Version: v0.7.0
 
 ## Setup
 
