@@ -8,6 +8,7 @@
 + [2024-03-29](#2024-03-29)
 + [2024-03-30](#2024-03-30)
 + [2024-04-03](#2024-04-03)
++ [2024-04-04](#2024-04-04)
 
 ## Entry Logs
 ### 2024-03-25
@@ -381,4 +382,28 @@
         + Added a simple menu while loop with a working menu system in 'start_package_management()'
     - Updated source file 'bpm.py' in 'src/bpm'
         + Added 'makefile_name' and 'makefile_path' to the 'export_makefile()' arguments
+
+### 2024-04-04
+#### 2102H
+- New
+    + Added new python packaging toml configuration file 'pyproject.toml' for replacing setup.py
+
+#### 2108H
++ Version: v0.7.0
+
+- Version Changes
+    - Repository changes of note
+        + Replaced 'setup.py' with 'pyproject.toml' which not only allows for use of setuptools, but compatibility with other build systems
+    - Bug Fixes
+        + Fixed bug where library/modules can be imported in Linux after installation, but has issues being imported on Windows
+
+- New
+    + Added new python packaging toml configuration file 'pyproject.toml' for replacing setup.py
+
+- Updates
+    - Updated document 'README.md'
+        + Updated package version to '0.7.0'
+    - Replaced 'setup.py' with 'pyproject.toml' which not only allows for use of setuptools, but compatibility with other build systems
+        + Updated package version to '0.7.0'
+
 
